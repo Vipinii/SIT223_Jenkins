@@ -1,65 +1,76 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Build') {
+        stage('Stage 1: Build') {
             steps {
-                echo 'Compiling the code using Maven'
+                echo 'Initiating build process...'
+                echo 'Compiling and packaging the React application...'
+                echo 'Tool used: Webpack or Vite'
             }
         }
-        stage('Unit and Integration Tests') {
+
+        stage('Stage 2: Unit and Integration Tests') {
             steps {
-                echo 'Executing unit tests'
-                echo 'Conducting integration tests'
+                echo 'Executing unit and integration tests...'
+                echo 'Ensuring React components and functionality perform as expected...'
+                echo 'Tools used: Jest, Cypress, or Selenium'
             }
             post {
                 success {
-                    mail to: 'vkingk2@gmail.com',
-                    subject: 'Unit and integration test execution in progress',
-                    body: 'Unit and integration tests have been successfully executed'
+                    emailext attachLog: true, body: "Stage 2: Tests passed successfully.", subject: "Pipeline Notification: Stage 2 Passed", to: "vkingk2@gmail.com"
                 }
                 failure {
-                    mail to: 'vkingk2@gmail.com',
-                    subject: 'Failure in unit and integration test execution',
-                    body: 'Unit and integration tests have failed'
+                    emailext attachLog: true, body: "Stage 2: Tests failed. Please review the logs for details.", subject: "Pipeline Notification: Stage 2 Failed", to: "vkingk2@gmail.com"
                 }
             }
         }
-        stage('Code Analysis') {
+
+        stage('Stage 3: Code Analysis') {
             steps {
-                echo 'Performing code analysis'
+                echo 'Conducting code analysis...'
+                echo 'Analyzing the React code to ensure adherence to industry standards...'
+                echo 'Tools used: ESLint or SonarQube'
             }
         }
-        stage('Security Scan') {
+
+        stage('Stage 4: Security Scan') {
             steps {
-                echo 'Conducting security scan'
+                echo 'Performing security scan...'
+                echo 'Identifying potential vulnerabilities within the React application...'
+                echo 'Tools used: OWASP ZAP or other security scanners'
             }
             post {
                 success {
-                    mail to: 'vkingk2@gmail.com',
-                    subject: 'Security scan in progress',
-                    body: 'Security scan has been successfully completed'
+                    emailext attachLog: true, body: "Stage 4: Security Scan passed successfully.", subject: "Pipeline Notification: Stage 4 Passed", to: "vkingk2@gmail.com"
                 }
                 failure {
-                    mail to: 'vkingk2@gmail.com',
-                    subject: 'Failure in security scan',
-                    body: 'Security scan has failed'
+                    emailext attachLog: true, body: "Stage 4: Security Scan failed. Please review the logs for details.", subject: "Pipeline Notification: Stage 4 Failed", to: "vkingk2@gmail.com"
                 }
             }
         }
-        stage('Deploy to Staging') {
+
+        stage('Stage 5: Deploy to Staging') {
             steps {
-                echo 'Deploying the application to staging environment'
+                echo 'Deploying React application to staging environment...'
+                echo 'Preparing for testing and preview...'
+                echo 'Tools used: AWS S3 or Netlify'
             }
         }
-        stage('Integration Tests on Staging') {
+
+        stage('Stage 6: Integration Tests on Staging') {
             steps {
-                echo 'Running integration tests on staging server'
+                echo 'Running integration tests on staging environment...'
+                echo 'Ensuring application functions correctly in a production-like environment...'
+                echo 'Tools used: Cypress or Selenium'
             }
         }
-        stage('Deploy to Production') {
+
+        stage('Stage 7: Deploy to Production') {
             steps {
-                echo 'Deploying the application to production server'
+                echo 'Deploying React application to production environment...'
+                echo 'Finalizing deployment for live usage...'
+                echo 'Tools used: AWS S3, Netlify, or a web server'
             }
         }
     }
