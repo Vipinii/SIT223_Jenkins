@@ -17,6 +17,16 @@ pipeline {
                     echo "Description: Run unit tests and integration tests"
                 }
             }
+            post {
+                success {
+                    emailext attachLog: true, body: "Stage 2: Tests passed successfully.", subject: "Pipeline Notification: Stage 2 Passed", to: "vkingk2@gmail.com"
+                }
+                failure {
+                    emailext attachLog: true, body: "Stage 2: Tests failed. Please review the logs for details.", subject: "Pipeline Notification: Stage 2 Failed", to: "vkingk2@gmail.com"
+                }
+            }
+        }
+
         }
 
         stage('Code Analysis') {
