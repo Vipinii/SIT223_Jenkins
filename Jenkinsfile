@@ -17,12 +17,12 @@ pipeline {
             }
             post {
                 success {
-                    mail to: 'aryansingh57602@gmail.com',
+                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
                         subject: 'Unit and Integration Tests Success',
                         body: 'The unit and integration tests have succeeded. Find attached logs for more information.'
                 }
                 failure {
-                    mail to: 'aryansingh57602@gmail.com',
+                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
                         subject: 'Unit and Integration Tests Failed',
                         body: 'The unit and integration tests have failed. Find attached logs for more information.'
                 }
@@ -39,12 +39,12 @@ pipeline {
             }
             post {
                 success {
-                    mail to: 'aryansingh57602@gmail.com',
+                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
                         subject: 'Security Scan Success',
                         body: 'The Security Scan has succeeded. Find attached logs for more information.'
                 }
                 failure {
-                    mail to: 'aryansingh57602@gmail.com',
+                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
                         subject: 'Security Scan Failed',
                         body: 'The Security Scan has failed. Find attached logs for more information.'
                 }
@@ -61,12 +61,12 @@ pipeline {
             }
             post {
                 success {
-                    mail to: 'aryansingh57602@gmail.com',
+                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
                         subject: 'Integration Tests on Staging Success',
                         body: 'The Integration Tests on Staging have succeeded. Find attached logs for more information.'
                 }
                 failure {
-                    mail to: 'aryansingh57602@gmail.com',
+                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
                         subject: 'Integration Tests on Staging Failed',
                         body: 'The Integration Tests on Staging have failed. Find attached logs for more information.'
                 }
