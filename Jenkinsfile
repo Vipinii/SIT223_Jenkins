@@ -1,81 +1,94 @@
 pipeline {
     agent any
-    tools {
-        jdk 'jdk-21'
+
+
+    environment {
+        MAVEN_HOME = tool 'Maven'
+        STAGING_SERVER = "staging.example.com"
+        PRODUCTION_SERVER = "production.example.com"
     }
+
     stages {
         stage('Build') {
             steps {
-                echo "Fetching the source code from GitHub"
-                echo "Compiling the code and generating artifacts"
+                // Use Maven to build the code
+
+                script {
+                    echo "Building the code using Maven"
+
+                }
             }
         }
+
         stage('Unit and Integration Tests') {
             steps {
-                echo "Running unit tests started and completed"
-                echo "Running integration tests started and completed"
-            }
-            post {
-                success {
-                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
-                        subject: 'Unit and Integration Tests Success',
-                        body: 'The unit and integration tests have succeeded. Find attached logs for more information.'
-                }
-                failure {
-                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
-                        subject: 'Unit and Integration Tests Failed',
-                        body: 'The unit and integration tests have failed. Find attached logs for more information.'
+                // Use JUnit for unit tests
+      ]
+                // Use a tool like Selenium for integration tests
+      ]
+                script {
+                    echo "Running unit tests"
+
+
+                    echo "Running integration tests"
+
                 }
             }
         }
+
         stage('Code Analysis') {
             steps {
-                echo "Running Code Analysis started and completed"
+                // Use Jenkins plugins like Checkstyle, PMD, FindBugs, etc.
+                // Example: Checkstyle plugin
+
+                script {
+                    echo "Analyzing code quality using SonarQube"
+
+                }
             }
         }
+
         stage('Security Scan') {
             steps {
-                echo "Running Security Scan started and completed"
-            }
-            post {
-                success {
-                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
-                        subject: 'Security Scan Success',
-                        body: 'The Security Scan has succeeded. Find attached logs for more information.'
-                }
-                failure {
-                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
-                        subject: 'Security Scan Failed',
-                        body: 'The Security Scan has failed. Find attached logs for more information.'
+                // Use a security scanning tool like OWASP Dependency-Check
+
+                script {
+                    echo "Performing security scan using OWASP Dependency-Check"
+
                 }
             }
         }
+
         stage('Deploy to Staging') {
             steps {
-                echo "Running Deploy to Staging started and completed"
+                // Use a deployment tool like AWS CLI or Ansible
+
+                script {
+                    echo "Deploying the application to staging server: ${env.STAGING_SERVER}"
+
+                }
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
-                echo "Running Integration Tests on Staging started and completed"
-            }
-            post {
-                success {
-                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
-                        subject: 'Integration Tests on Staging Success',
-                        body: 'The Integration Tests on Staging have succeeded. Find attached logs for more information.'
-                }
-                failure {
-                    mail to: 'vipin.kumar4861.be22@chitkara.edu.in',
-                        subject: 'Integration Tests on Staging Failed',
-                        body: 'The Integration Tests on Staging have failed. Find attached logs for more information.'
+                // Run integration tests on the staging environment
+
+                script {
+                    echo "Running integration tests on staging environment"
+
                 }
             }
         }
+
         stage('Deploy to Production') {
             steps {
-                echo "Running Integration Tests on Staging started and completed"
+                // Deploy to production using AWS CLI or Ansible
+
+                script {
+                    echo "Deploying the application to production server: ${env.PRODUCTION_SERVER}"
+
+                }
             }
         }
     }
-}
