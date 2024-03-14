@@ -1,1 +1,136 @@
-#hello
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+
+namespace RobotApplication
+{
+    public record RobotCommand(string Id, string Command, bool IsMove);
+
+    public record RobotMap(int Width, int Height);
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            const int MinMapSize = 2;
+            const int MaxMapSize = 100;
+
+            var robotCommands = new List<RobotCommand>
+    {
+    new RobotCommand("1", "LEFT", true),
+    new RobotCommand("2", "RIGHT", true),
+    new RobotCommand("3", "PLACE", false),
+    new RobotCommand("4", "MOVE", true),
+    };
+
+            var robotMap = new RobotMap(10, 10);
+
+            var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddEndpointsApiExplorer();
+
+            var app = builder.Build();
+            app.UseHttpsRedirection();
+            app.MapGet("/", () => "Hello, Robot!");
+
+            app.MapGet("/robotcommands", () =>
+            {
+                return robotCommands.ToArray();
+            });
+
+            app.MapGet("/robotcommands/move", () =>
+            {
+                var moveCommands = robotCommands.Where(cmd => cmd.IsMove).ToArray();
+                return moveCommands;
+            });
+
+
+            app.MapGet("/robotcommands/{id}", async (HttpContext context) =>
+            {
+                string id = context.Request.RouteValues["id"] as string;
+                var command = robotCommands.FirstOrDefault(cmd => cmd.Id == id);
+                if (command != null)
+                {
+                    await context.Response.WriteAsJsonAsync(command);
+                }
+                else
+                {
+                    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                }
+            });
+
+            app.MapPost("/robotcommands", async (HttpContext context) =>
+            {
+                var updatedCommand = await context.Request.ReadFromJsonAsync<RobotCommand>();
+                Console.WriteLine("asdfasdfs" + updatedCommand);
+
+                robotCommands.Add(updatedCommand);
+                return updatedCommand;
+
+
+            });
+
+            app.MapPut("/robotcommands/{id}", async (HttpContext context) =>
+            {
+                string id = context.Request.RouteValues["id"] as string;
+                var updatedCommand = await context.Request.ReadFromJsonAsync<RobotCommand>();
+                var index = robotCommands.FindIndex(cmd => cmd.Id == id);
+                if (index != -1)
+                {
+                    robotCommands[index] = updatedCommand;
+                    await context.Response.WriteAsync("Command updated successfully.");
+                }
+                else
+                {
+                    context.Response.StatusCode = StatusCodes.Status404NotFound;
+                }
+            });
+
+            app.MapGet("/robot-map", () =>
+            {
+                return robotMap;
+            });
+
+            app.MapGet("/robotmap/{coordinate}", async (HttpContext context) =>
+            {
+                string coordinate = context.Request.RouteValues["coordinate"] as string;
+                var parts = coordinate.Split('-');
+                if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+                {
+                    var isValid = x >= 0 && x < robotMap.Width && y >= 0 && y < robotMap.Height;
+                    await context.Response.WriteAsJsonAsync(isValid);
+                }
+                else
+                {
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    await context.Response.WriteAsync("Invalid coordinate format. Use 'x-y'.");
+                }
+            });
+
+            app.MapPut("/robot-map", async (HttpContext context) =>
+            {
+                var newMap = await context.Request.ReadFromJsonAsync<RobotMap>();
+                if (newMap.Width >= MinMapSize && newMap.Width <= MaxMapSize && newMap.Height >= MinMapSize && newMap.Height <= MaxMapSize && newMap.Width == newMap.Height)
+                {
+                    robotMap = newMap;
+                    await context.Response.WriteAsync("Robot map updated successfully.");
+                }
+                else
+                {
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    await context.Response.WriteAsync($"Invalid map size. Map must be square with dimensions between {MinMapSize}x{MinMapSize} and {MaxMapSize}x{MaxMapSize}.");
+                }
+            });
+
+
+
+            app.Run();
+        }
+    }
+}
+
+
+
+
