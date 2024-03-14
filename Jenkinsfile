@@ -1,76 +1,80 @@
 pipeline {
     agent any
-    
-    environment {
-        MAVEN_HOME = tool 'Maven'
-        STAGING_SERVER = "staging.example.com"
-        PRODUCTION_SERVER = "production.example.com"
+    tools {
+        jdk 'jdk-21'
     }
-    
     stages {
         stage('Build') {
             steps {
-                script {
-                    echo "Building the code using Maven"
-
-                }
+                echo "Fetching the source code from GitHub"
+                echo "Compiling the code and generating artifacts"
             }
         }
-        
         stage('Unit and Integration Tests') {
             steps {
-                script {
-                    echo "Running unit tests"
-                    
-                    
-                    echo "Running integration tests"
-                   
+                echo "Running unit tests started and completed"
+                echo "Running integration tests started and completed"
+            }
+            post {
+                success {
+                    mail to: 'aryansingh57602@gmail.com',
+                        subject: 'Unit and Integration Tests Success',
+                        body: 'The unit and integration tests have succeeded. Find attached logs for more information.'
+                }
+                failure {
+                    mail to: 'aryansingh57602@gmail.com',
+                        subject: 'Unit and Integration Tests Failed',
+                        body: 'The unit and integration tests have failed. Find attached logs for more information.'
                 }
             }
         }
-        
         stage('Code Analysis') {
             steps {
-                script {
-                    echo "Analyzing code quality using SonarQube"
-                    
-                }
+                echo "Running Code Analysis started and completed"
             }
         }
-        
         stage('Security Scan') {
             steps {
-                script {
-                    echo "Performing security scan using OWASP Dependency-Check"
-                   
+                echo "Running Security Scan started and completed"
+            }
+            post {
+                success {
+                    mail to: 'aryansingh57602@gmail.com',
+                        subject: 'Security Scan Success',
+                        body: 'The Security Scan has succeeded. Find attached logs for more information.'
+                }
+                failure {
+                    mail to: 'aryansingh57602@gmail.com',
+                        subject: 'Security Scan Failed',
+                        body: 'The Security Scan has failed. Find attached logs for more information.'
                 }
             }
         }
-        
         stage('Deploy to Staging') {
             steps {
-                script {
-                    echo "Deploying the application to staging server: ${env.STAGING_SERVER}"
-                   
-                }
+                echo "Running Deploy to Staging started and completed"
             }
         }
-        
         stage('Integration Tests on Staging') {
             steps {
-                script {
-                    echo "Running integration tests on staging environment"
-                    
+                echo "Running Integration Tests on Staging started and completed"
+            }
+            post {
+                success {
+                    mail to: 'aryansingh57602@gmail.com',
+                        subject: 'Integration Tests on Staging Success',
+                        body: 'The Integration Tests on Staging have succeeded. Find attached logs for more information.'
+                }
+                failure {
+                    mail to: 'aryansingh57602@gmail.com',
+                        subject: 'Integration Tests on Staging Failed',
+                        body: 'The Integration Tests on Staging have failed. Find attached logs for more information.'
                 }
             }
         }
-        
         stage('Deploy to Production') {
             steps {
-                script {
-                    echo "Deploying the application to production server: ${env.PRODUCTION_SERVER}"
-                    
-                }
+                echo "Running Integration Tests on Staging started and completed"
             }
         }
     }
