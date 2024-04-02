@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Initiating build process...'
                 echo 'Compiling and packaging the React application...'
-                echo 'Tool used: Webpack or Vite'
+                echo 'Tool used: Maven'
             }
         }
 
@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo 'Executing unit and integration tests...'
                 echo 'Ensuring React components and functionality perform as expected...'
-                echo 'Tools used: Jest, Cypress, or Selenium'
+                echo 'Tools used: Cypress, Selenium'
             }
             post {
                 success {
@@ -30,7 +30,7 @@ pipeline {
             steps {
                 echo 'Conducting code analysis...'
                 echo 'Analyzing the React code to ensure adherence to industry standards...'
-                echo 'Tools used: ESLint or SonarQube'
+                echo 'Tools used: SonarQube'
             }
         }
 
@@ -38,7 +38,7 @@ pipeline {
             steps {
                 echo 'Performing security scan...'
                 echo 'Identifying potential vulnerabilities within the React application...'
-                echo 'Tools used: OWASP ZAP or other security scanners'
+                echo 'Tools used: OWASP ZAP'
             }
             post {
                 success {
@@ -70,7 +70,7 @@ pipeline {
             steps {
                 echo 'Deploying React application to production environment...'
                 echo 'Finalizing deployment for live usage...'
-                echo 'Tools used: AWS S3, Netlify, or a web server'
+                echo 'Tools used: AWS S3, Netlify'
             }
         }
     }
