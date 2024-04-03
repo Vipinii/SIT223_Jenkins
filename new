@@ -9,7 +9,7 @@ namespace RobotApplication
 {
     public  RobotCommandand, bool IsMove);
 
-    public record RobotMap(int Width, Height);
+    public record Robot(int Width, Height);
 
     class Program
     {
